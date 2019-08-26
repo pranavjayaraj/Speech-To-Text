@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:id="@+id/search_layout"
+        android:background="@drawable/corner"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_height="200dp">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:elevation="50dp"
+        android:id="@+id/custom"
+        android:orientation="horizontal">
+
+        <TableRow>
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/rounded_corner_textview"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/search"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:hint="Ask Me Anything"
+                android:paddingLeft="7dp"
+                android:inputType="text"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/ic_feild_search"
+                android:id="@+id/icon"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:layout_alignParentTop="true"
+                />
+        </TableRow>
+    </TableLayout>
+    </LinearLayout>
+
+    <Button
+        android:layout_below="@+id/search_layout"
+        android:layout_width="150dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="Recent"
+        android:textColor="@color/colorAccent"
+        android:textStyle="normal"
+        android:id="@+id/recent"
+        android:textAllCaps="false"
+        android:background="@drawable/rounded_corner_textview"
+        android:layout_height="30dp" />
+
+    <Button
+        android:layout_below="@+id/recent"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text=" Who is the CEO of Microsoft  "
+        android:textColor="#ffffff"
+        android:textStyle="normal"
+        android:id="@+id/recent2"
+        android:textAllCaps="false"
+        android:background="@drawable/rounded_blue"
+        android:layout_height="30dp" />
+
+    <Button
+        android:layout_below="@+id/recent2"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text=" Who is the CEO of Google  "
+        android:id="@+id/recent3"
+        android:textColor="#ffffff"
+        android:textStyle="normal"
+        android:textAllCaps="false"
+        android:background="@drawable/rounded_blue"
+        android:layout_height="30dp" />
+
+    <Button
+        android:layout_below="@+id/recent3"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text=" Who is the president of America"
+        android:id="@+id/recent4"
+        android:textColor="#ffffff"
+        android:textStyle="normal"
+        android:textAllCaps="false"
+        android:background="@drawable/rounded_blue"
+        android:layout_height="30dp" />
+    <Button
+        android:layout_below="@+id/recent4"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text=" Who is the Prime minister of India  "
+        android:id="@+id/recent5"
+        android:textColor="#ffffff"
+        android:textStyle="normal"
+        android:textAllCaps="false"
+        android:background="@drawable/rounded_blue"
+        android:layout_height="30dp" />
+
+
+    <com.pranavjayaraj.intellimind.VoiceView
+        android:id="@+id/recordButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="Zzz..."
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/status_not_hearing"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
+</RelativeLayout>
