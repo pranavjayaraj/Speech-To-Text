@@ -22,11 +22,15 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
-public class SpeechConversation extends AppCompatActivity implements VoiceView.OnRecordListener {
+import com.pranavjayaraj.intellimind.Database.DatabaseHandler;
 
+import java.util.List;
+
+public class SpeechConversation extends AppCompatActivity implements VoiceView.OnRecordListener {
     private static String TAG = "SpeechConversation";
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 1;
@@ -42,8 +46,17 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
     private int mColorNotHearing;
 
     private String mSavedText;
-    private AutoCompleteTextView search;
+    CustomAutoCompleteView search;
     private Handler mHandler;
+
+    // adapter for auto-complete
+    ArrayAdapter<String> myAdapter;
+
+    // for database operations
+    DatabaseHandler databaseH;
+
+    // just to add some initial value
+    String[] item = new String[] {"Please search..."};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,8 +65,77 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.speechlayout);
-        search = (AutoCompleteTextView) findViewById(R.id.search);
+        search = (CustomAutoCompleteView) findViewById(R.id.search);
         initViews();
+        try{
+
+            // instantiate database handler
+            databaseH = new DatabaseHandler(SpeechConversation.this);
+
+            // put sample data to database
+            insertSampleData();
+
+            // autocompletetextview is in activity_main.xml
+            search = (CustomAutoCompleteView) findViewById(R.id.search);
+
+            // add the listener so it will tries to suggest while the user types
+            search.addTextChangedListener(new CustomAutoCompleteTextChangedListener(this));
+
+            // set our adapter
+            myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, item);
+            search.setAdapter(myAdapter);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // this function is used in CustomAutoCompleteTextChangedListener.java
+    public String[] getItemsFromDb(){
+
+        // add items on the array dynamically
+        List<MyObject> products = databaseH.read();
+        int rowCount = products.size();
+
+        String[] item = new String[rowCount];
+        int x = 0;
+
+        for (MyObject record : products) {
+
+            item[x] = record.objectName;
+            x++;
+        }
+
+        return item;
+    }
+
+    public void insertSampleData(){
+
+        // CREATE
+        databaseH.create( new MyObject("January") );
+        databaseH.create( new MyObject("February") );
+        databaseH.create( new MyObject("March") );
+        databaseH.create( new MyObject("April") );
+        databaseH.create( new MyObject("May") );
+        databaseH.create( new MyObject("June") );
+        databaseH.create( new MyObject("July") );
+        databaseH.create( new MyObject("August") );
+        databaseH.create( new MyObject("September") );
+        databaseH.create( new MyObject("October") );
+        databaseH.create( new MyObject("November") );
+        databaseH.create( new MyObject("December") );
+        databaseH.create( new MyObject("New Caledonia") );
+        databaseH.create( new MyObject("New Zealand") );
+        databaseH.create( new MyObject("Papua New Guinea") );
+        databaseH.create( new MyObject("COFFEE-1K") );
+        databaseH.create( new MyObject("coffee raw") );
+        databaseH.create( new MyObject("authentic COFFEE") );
+        databaseH.create( new MyObject("who is the CEO of Microsoft") );
+        databaseH.create( new MyObject("who is the CEO of Google") );
+        databaseH.create( new MyObject("Indian-coffee-two") );
+
     }
 
     @Override
