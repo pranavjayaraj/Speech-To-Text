@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="10dp"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <Button
+        android:layout_below="@+id/search_layout"
+        android:layout_width="wrap_content"
+        android:textColor="#ffffff"
+        android:textStyle="normal"
+        android:id="@+id/recent"
+        android:textAllCaps="false"
+        android:background="@drawable/rounded_blue"
+        android:layout_height="25dp" />
+</RelativeLayout>

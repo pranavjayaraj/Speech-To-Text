@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
@@ -18,16 +19,27 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pranavjayaraj.intellimind.Database.DatabaseHandler;
+import com.pranavjayaraj.intellimind.Recent.RecentAdapter;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SpeechConversation extends AppCompatActivity implements VoiceView.OnRecordListener {
@@ -58,14 +70,35 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
     // just to add some initial value
     String[] item = new String[] {"Please search..."};
 
+    ImageButton imageButton;
+
+    RecyclerView recyclerView;
+
+    RecentAdapter recentAdapter;
+
+    ArrayList<String> arrPackage = new ArrayList<String>();
+
+    SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("USER",MODE_PRIVATE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.speechlayout);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        editor = sharedPreferences.edit();
         search = (CustomAutoCompleteView) findViewById(R.id.search);
+        imageButton = (ImageButton) findViewById(R.id.search_icon);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertSearchData();
+                SaveToRecent();
+            }
+        });
         initViews();
         try{
 
@@ -90,6 +123,8 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        ReadRecent();
     }
 
     // this function is used in CustomAutoCompleteTextChangedListener.java
@@ -111,31 +146,55 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
         return item;
     }
 
+    public void SaveToRecent(){
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Set", "");
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        if (!json.isEmpty())
+        {
+            arrPackage = gson.fromJson(json, type);
+            if(arrPackage!=null) {
+                if (arrPackage.size() >= 5) {
+                    arrPackage.remove(0);
+                }
+        }
+        }
+        arrPackage.add(search.getText().toString());
+        String json2 = gson.toJson(arrPackage);
+        editor.putString("Set",json2);
+        editor.commit();
+       Display();
+    }
+
+    public void ReadRecent()
+    {
+        // Read the reverse queue from sharedpref
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("Set", "");
+        if (json.isEmpty()) {
+        }
+        else {
+            Type type = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            arrPackage = gson.fromJson(json, type);
+           Display();
+        }
+    }
+
     public void insertSampleData(){
 
         // CREATE
-        databaseH.create( new MyObject("January") );
-        databaseH.create( new MyObject("February") );
-        databaseH.create( new MyObject("March") );
-        databaseH.create( new MyObject("April") );
-        databaseH.create( new MyObject("May") );
-        databaseH.create( new MyObject("June") );
-        databaseH.create( new MyObject("July") );
-        databaseH.create( new MyObject("August") );
-        databaseH.create( new MyObject("September") );
-        databaseH.create( new MyObject("October") );
-        databaseH.create( new MyObject("November") );
-        databaseH.create( new MyObject("December") );
-        databaseH.create( new MyObject("New Caledonia") );
-        databaseH.create( new MyObject("New Zealand") );
-        databaseH.create( new MyObject("Papua New Guinea") );
-        databaseH.create( new MyObject("COFFEE-1K") );
-        databaseH.create( new MyObject("coffee raw") );
-        databaseH.create( new MyObject("authentic COFFEE") );
         databaseH.create( new MyObject("who is the CEO of Microsoft") );
         databaseH.create( new MyObject("who is the CEO of Google") );
-        databaseH.create( new MyObject("Indian-coffee-two") );
+        databaseH.create( new MyObject("Who is the Prime minister of India") );
+        databaseH.create( new MyObject("Who is the President of America") );
 
+    }
+
+    public void insertSearchData()
+    {
+        databaseH.create(new MyObject(search.getText().toString()));
     }
 
     @Override
@@ -355,5 +414,17 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context
                 .getResources().getDisplayMetrics());
         return px;
+    }
+
+    void Display()
+    {
+        recentAdapter = new RecentAdapter(arrPackage);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mLayoutManager.setReverseLayout(true);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(recentAdapter);
+        recentAdapter.notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 }

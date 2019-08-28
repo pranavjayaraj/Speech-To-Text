@@ -142,5 +142,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return the list of records
         return recordsList;
     }
+    public List<MyObject> recent() {
 
+        List<MyObject> recordsList = new ArrayList<MyObject>();
+
+        // select query
+        String sql = "";
+        sql += "SELECT * FROM " + tableName + " ORDER BY id DESC LIMIT 5 ";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // execute the query
+        Cursor cursor = db.rawQuery(sql, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+
+                // int productId = Integer.parseInt(cursor.getString(cursor.getColumnIndex(fieldProductId)));
+                String objectName = cursor.getString(cursor.getColumnIndex(fieldObjectName));
+                MyObject myObject = new MyObject(objectName);
+
+                // add to list
+                recordsList.add(myObject);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        // return the list of records
+        return recordsList;
+    }
 }

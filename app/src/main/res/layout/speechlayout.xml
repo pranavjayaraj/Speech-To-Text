@@ -48,7 +48,7 @@
                 android:layout_height="40dp"
                 android:layout_marginRight="15dp"
                 android:src="@drawable/ic_feild_search"
-                android:id="@+id/icon"
+                android:id="@+id/search_icon"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:layout_alignParentTop="true"
@@ -70,57 +70,15 @@
         android:background="@drawable/rounded_corner_textview"
         android:layout_height="30dp" />
 
-    <Button
-        android:layout_below="@+id/recent"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text=" Who is the CEO of Microsoft  "
-        android:textColor="#ffffff"
-        android:textStyle="normal"
-        android:id="@+id/recent2"
-        android:textAllCaps="false"
-        android:background="@drawable/rounded_blue"
-        android:layout_height="30dp" />
 
-    <Button
-        android:layout_below="@+id/recent2"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layoutAnimation="@anim/layout_anim"
+        android:layout_marginTop="30dp"
+        android:layout_alignTop="@+id/recent"
         android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text=" Who is the CEO of Google  "
-        android:id="@+id/recent3"
-        android:textColor="#ffffff"
-        android:textStyle="normal"
-        android:textAllCaps="false"
-        android:background="@drawable/rounded_blue"
-        android:layout_height="30dp" />
-
-    <Button
-        android:layout_below="@+id/recent3"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text=" Who is the president of America"
-        android:id="@+id/recent4"
-        android:textColor="#ffffff"
-        android:textStyle="normal"
-        android:textAllCaps="false"
-        android:background="@drawable/rounded_blue"
-        android:layout_height="30dp" />
-    <Button
-        android:layout_below="@+id/recent4"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text=" Who is the Prime minister of India  "
-        android:id="@+id/recent5"
-        android:textColor="#ffffff"
-        android:textStyle="normal"
-        android:textAllCaps="false"
-        android:background="@drawable/rounded_blue"
-        android:layout_height="30dp" />
-
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
 
     <com.pranavjayaraj.intellimind.VoiceView
         android:id="@+id/recordButton"
