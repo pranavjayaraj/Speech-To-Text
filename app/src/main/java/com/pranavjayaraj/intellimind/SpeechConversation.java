@@ -254,14 +254,33 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (isFinal) {
+                    if (isFinal&&(!search.getText().equals(""))) {
                         Log.d(TAG, "Final Response : " + text);
-                        if (mSavedText.equalsIgnoreCase(text)) {
+                        insertSearchData();
+                        SaveToRecent();
+                        search.setText("");
+                        stopVoiceRecorder();
+                        mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
+                        mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
+                        mPlayer.start();//Start playing the music
+                    } else {
+                        if (text.toLowerCase().contains("search"))
+                        {
+                            insertSearchData();
+                            SaveToRecent();
+                            search.setText("");
+                            stopVoiceRecorder();
+                            mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
+                            mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
+                            mPlayer.start();//Start playing the music
+                        }
+                        else if(text.toLowerCase().contains("clear"))
+                        {
+                            search.setText("");
+                        }
+                        else {
                             search.setText(text);
                         }
-                    } else {
-                        Log.d(TAG, "Non Final Response : " + text);
-                        search.setText(text);
                     }
                 }
             });
