@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind.Database;
+package com.pranavjayaraj.intellimind.Trie;
 
 /**
  * Created by kuttanz on 27/8/19.

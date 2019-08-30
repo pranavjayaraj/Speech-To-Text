@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pranavjayaraj.intellimind.MyObject;
+import com.pranavjayaraj.intellimind.SearchObject;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -65,7 +65,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // create new record
     // @param myObj contains details to be added as single row.
-    public boolean create(MyObject myObj) {
+    public boolean create(SearchObject myObj) {
 
         boolean createSuccessful = false;
 
@@ -109,9 +109,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Read records related to the search term
-    public List<MyObject> read() {
+    public List<SearchObject> read() {
 
-        List<MyObject> recordsList = new ArrayList<MyObject>();
+        List<SearchObject> recordsList = new ArrayList<SearchObject>();
 
         // select query
         String sql = "";
@@ -128,10 +128,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 // int productId = Integer.parseInt(cursor.getString(cursor.getColumnIndex(fieldProductId)));
                 String objectName = cursor.getString(cursor.getColumnIndex(fieldObjectName));
-                MyObject myObject = new MyObject(objectName);
+                SearchObject searchObject = new SearchObject(objectName);
 
                 // add to list
-                recordsList.add(myObject);
+                recordsList.add(searchObject);
 
             } while (cursor.moveToNext());
         }
@@ -142,9 +142,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return the list of records
         return recordsList;
     }
-    public List<MyObject> recent() {
+    public List<SearchObject> recent() {
 
-        List<MyObject> recordsList = new ArrayList<MyObject>();
+        List<SearchObject> recordsList = new ArrayList<SearchObject>();
 
         // select query
         String sql = "";
@@ -161,10 +161,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 // int productId = Integer.parseInt(cursor.getString(cursor.getColumnIndex(fieldProductId)));
                 String objectName = cursor.getString(cursor.getColumnIndex(fieldObjectName));
-                MyObject myObject = new MyObject(objectName);
+                SearchObject searchObject = new SearchObject(objectName);
 
                 // add to list
-                recordsList.add(myObject);
+                recordsList.add(searchObject);
 
             } while (cursor.moveToNext());
         }

@@ -26,7 +26,7 @@
 
         <TableRow>
 
-            <com.pranavjayaraj.intellimind.CustomAutoCompleteView
+            <com.pranavjayaraj.intellimind.AutoComplete.CustomAutoCompleteView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginRight="15dp"
@@ -71,7 +71,7 @@
         android:layout_height="30dp" />
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layoutAnimation="@anim/layout_anim"
         android:layout_marginTop="30dp"

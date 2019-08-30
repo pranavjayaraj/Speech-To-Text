@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind;
+package com.pranavjayaraj.intellimind.AutoComplete;
 
 /**
  * Created by kuttanz on 26/8/19.
@@ -8,7 +8,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.AutoCompleteTextView;
 
-public class CustomAutoCompleteView extends android.support.v7.widget.AppCompatAutoCompleteTextView {
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+
+public class CustomAutoCompleteView extends AppCompatAutoCompleteTextView {
 
     public CustomAutoCompleteView(Context context) {
         super(context);

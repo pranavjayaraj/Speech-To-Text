@@ -19,9 +19,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.speech.v1.RecognitionAudio;
 import com.google.cloud.speech.v1.RecognitionConfig;
-import com.google.cloud.speech.v1.RecognizeRequest;
 import com.google.cloud.speech.v1.RecognizeResponse;
 import com.google.cloud.speech.v1.SpeechGrpc;
 import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
@@ -40,10 +38,11 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import io.grpc.CallOptions;
 import io.grpc.Channel;
@@ -266,6 +265,7 @@ public class CloudSpeechService extends Service {
                         .setSingleUtterance(false)
                         .build())
                 .build());
+        System.out.print("Hi"+getDefaultLanguageCode());
     }
 
     /**
@@ -299,30 +299,6 @@ public class CloudSpeechService extends Service {
         }
         mRequestObserver.onCompleted();
         mRequestObserver = null;
-    }
-
-    /**
-     * Recognize all data from the specified {@link InputStream}.
-     *
-     * @param stream The audio data.
-     */
-    public void recognizeInputStream(InputStream stream) {
-        try {
-            mApi.recognize(
-                    RecognizeRequest.newBuilder()
-                            .setConfig(RecognitionConfig.newBuilder()
-                                    .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
-                                    .setLanguageCode("en-US")
-                                    .setSampleRateHertz(16000)
-                                    .build())
-                            .setAudio(RecognitionAudio.newBuilder()
-                                    .setContent(ByteString.readFrom(stream))
-                                    .build())
-                            .build(),
-                    mFileResponseObserver);
-        } catch (IOException e) {
-            Log.e(TAG, "Error loading the input", e);
-        }
     }
 
     private class SpeechBinder extends Binder {

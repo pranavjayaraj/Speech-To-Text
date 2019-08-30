@@ -7,7 +7,8 @@ package com.pranavjayaraj.intellimind;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 public class VoiceRecorder {
 

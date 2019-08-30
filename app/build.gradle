@@ -2,12 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.protobuf'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.pranavjayaraj.intellimind"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -51,26 +50,25 @@ protobuf {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
-    compile "io.grpc:grpc-okhttp:${grpcVersion}"
-    compile "io.grpc:grpc-protobuf-lite:${grpcVersion}"
-    compile "io.grpc:grpc-stub:${grpcVersion}"
-    compile 'javax.annotation:javax.annotation-api:1.2'
-    protobuf 'com.google.protobuf:protobuf-java:3.3.1'
-
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    implementation 'com.android.support:recyclerview-v7:26.+'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "io.grpc:grpc-okhttp:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf-lite:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation 'javax.annotation:javax.annotation-api:1.2'
+    protobuf 'com.google.protobuf:protobuf-java:3.4.0'
+    def support_lib_version = '1.0.0'
+    implementation "androidx.appcompat:appcompat:1.0.2"
+    implementation "com.google.android.material:material:$support_lib_version"
+    implementation "androidx.recyclerview:recyclerview:$support_lib_version"
+    implementation "androidx.cardview:cardview:$support_lib_version"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     // OAuth2 for Google API
-    compile('com.google.auth:google-auth-library-oauth2-http:0.7.0') {
+    implementation('com.google.auth:google-auth-library-oauth2-http:0.7.0') {
         exclude module: 'httpclient'
     }
     implementation 'com.google.code.gson:gson:2.8.5'
+
+
 
 }

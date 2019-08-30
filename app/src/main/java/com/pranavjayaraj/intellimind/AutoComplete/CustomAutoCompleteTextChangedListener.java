@@ -1,14 +1,13 @@
-package com.pranavjayaraj.intellimind;
+package com.pranavjayaraj.intellimind.AutoComplete;
 
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import com.pranavjayaraj.intellimind.Database.Trie;
+import com.pranavjayaraj.intellimind.MainActivity;
+import com.pranavjayaraj.intellimind.Trie.Trie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +39,7 @@ public class CustomAutoCompleteTextChangedListener implements TextWatcher {
     public void onTextChanged(CharSequence userInput, int start, int before, int count) {
         // if you want to see in the logcat what the user types
 
-        SpeechConversation speechConversation = ((SpeechConversation) context);
+        MainActivity speechConversation = ((MainActivity) context);
 
         // query the database based on the user input
         speechConversation.item = speechConversation.getItemsFromDb();

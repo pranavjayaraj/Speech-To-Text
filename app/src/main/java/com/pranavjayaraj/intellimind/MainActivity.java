@@ -13,37 +13,34 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pranavjayaraj.intellimind.Database.DatabaseHandler;
 import com.pranavjayaraj.intellimind.Recent.RecentAdapter;
-
+import com.pranavjayaraj.intellimind.AutoComplete.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class SpeechConversation extends AppCompatActivity implements VoiceView.OnRecordListener {
-    private static String TAG = "SpeechConversation";
+public class MainActivity extends AppCompatActivity implements VoiceView.OnRecordListener {
+    private static String TAG = "MainActivity";
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 1;
 
@@ -58,17 +55,17 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
     private int mColorNotHearing;
 
     private String mSavedText;
-    CustomAutoCompleteView search;
+    public CustomAutoCompleteView search;
     private Handler mHandler;
 
     // adapter for auto-complete
-    ArrayAdapter<String> myAdapter;
+    public ArrayAdapter<String> myAdapter;
 
     // for database operations
     DatabaseHandler databaseH;
 
     // just to add some initial value
-    String[] item = new String[] {"Please search..."};
+    public String[] item = new String[] {"Please search..."};
 
     ImageButton imageButton;
 
@@ -95,15 +92,15 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertSearchData();
-                SaveToRecent();
+                    insertSearchData();
+                    SaveToRecent();
             }
         });
         initViews();
         try{
 
             // instantiate database handler
-            databaseH = new DatabaseHandler(SpeechConversation.this);
+            databaseH = new DatabaseHandler(MainActivity.this);
 
             // put sample data to database
             insertSampleData();
@@ -131,13 +128,13 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
     public String[] getItemsFromDb(){
 
         // add items on the array dynamically
-        List<MyObject> products = databaseH.read();
+        List<SearchObject> products = databaseH.read();
         int rowCount = products.size();
 
         String[] item = new String[rowCount];
         int x = 0;
 
-        for (MyObject record : products) {
+        for (SearchObject record : products) {
 
             item[x] = record.objectName;
             x++;
@@ -147,24 +144,25 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
     }
 
     public void SaveToRecent(){
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("Set", "");
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        if (!json.isEmpty())
-        {
-            arrPackage = gson.fromJson(json, type);
-            if(arrPackage!=null) {
-                if (arrPackage.size() >= 5) {
-                    arrPackage.remove(0);
+        if (!search.getText().toString().isEmpty()) {
+            Gson gson = new Gson();
+            String json = sharedPreferences.getString("Set", "");
+            Type type = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            if (!json.isEmpty()) {
+                arrPackage = gson.fromJson(json, type);
+                if (arrPackage != null) {
+                    if (arrPackage.size() >= 5) {
+                        arrPackage.remove(0);
+                    }
                 }
+            }
+            arrPackage.add(search.getText().toString());
+            String json2 = gson.toJson(arrPackage);
+            editor.putString("Set", json2);
+            editor.commit();
+            Display();
         }
-        }
-        arrPackage.add(search.getText().toString());
-        String json2 = gson.toJson(arrPackage);
-        editor.putString("Set",json2);
-        editor.commit();
-       Display();
     }
 
     public void ReadRecent()
@@ -185,16 +183,17 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
     public void insertSampleData(){
 
         // CREATE
-        databaseH.create( new MyObject("who is the CEO of Microsoft") );
-        databaseH.create( new MyObject("who is the CEO of Google") );
-        databaseH.create( new MyObject("Who is the Prime minister of India") );
-        databaseH.create( new MyObject("Who is the President of America") );
+        databaseH.create( new SearchObject("who is the CEO of Microsoft") );
+        databaseH.create( new SearchObject("who is the CEO of Google") );
+        databaseH.create( new SearchObject("Who is the Prime minister of India") );
+        databaseH.create( new SearchObject("Who is the President of America") );
 
     }
 
     public void insertSearchData()
     {
-        databaseH.create(new MyObject(search.getText().toString()));
+        if (!search.getText().toString().isEmpty())
+        databaseH.create(new SearchObject(search.getText().toString()));
     }
 
     @Override
@@ -264,19 +263,24 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
                         mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
                         mPlayer.start();//Start playing the music
                     } else {
-                        if (text.toLowerCase().contains("search"))
+                        if (text.toLowerCase().contains("search")) {
+                            if ((!search.getText().equals(""))) {
+                                insertSearchData();
+                                SaveToRecent();
+                                search.setText("");
+                                stopVoiceRecorder();
+                                mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
+                                mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
+                                mPlayer.start();//Start playing the music
+                            }
+                        }
+                        else if(text.toLowerCase().contains("stop"))
                         {
-                            insertSearchData();
-                            SaveToRecent();
                             search.setText("");
                             stopVoiceRecorder();
                             mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
                             mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
-                            mPlayer.start();//Start playing the music
-                        }
-                        else if(text.toLowerCase().contains("clear"))
-                        {
-                            search.setText("");
+                            mPlayer.start();
                         }
                         else {
                             search.setText(text);
@@ -323,7 +327,7 @@ public class SpeechConversation extends AppCompatActivity implements VoiceView.O
                 public void run() {
                     int amplitude = (buffer[0] & 0xff) << 8 | buffer[1];
                     double amplitudeDb3 = 20 * Math.log10((double)Math.abs(amplitude) / 32768);
-                    float radius2 = (float) Math.log10(Math.max(1, amplitudeDb3)) * dp2px(SpeechConversation.this, 20);
+                    float radius2 = (float) Math.log10(Math.max(1, amplitudeDb3)) * dp2px(MainActivity.this, 20);
                     mStartStopBtn.animateRadius(radius2 * 10);
                 }
             });
