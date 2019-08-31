@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pranavjayaraj.intellimind.Database.DatabaseHandler;
@@ -75,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
     ArrayList<String> arrPackage = new ArrayList<String>();
 
+    LottieAnimationView animationView;
+
+
     SharedPreferences.Editor editor;
     SharedPreferences sharedPreferences;
     @Override
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.speechlayout);
+        animationView = (LottieAnimationView) findViewById(R.id.menuAnimation2);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         editor = sharedPreferences.edit();
         search = (CustomAutoCompleteView) findViewById(R.id.search);
@@ -94,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
             public void onClick(View view) {
                     insertSearchData();
                     SaveToRecent();
+                Intent searchActivity = new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(searchActivity);
             }
         });
         initViews();
@@ -262,6 +269,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                         mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
                         mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
                         mPlayer.start();//Start playing the music
+                        Intent searchActivity = new Intent(MainActivity.this,SearchActivity.class);
+                        startActivity(searchActivity);
                     } else {
                         if (text.toLowerCase().contains("search")) {
                             if ((!search.getText().equals(""))) {
@@ -272,6 +281,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                                 mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
                                 mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
                                 mPlayer.start();//Start playing the music
+                                Intent searchActivity = new Intent(MainActivity.this,SearchActivity.class);
+                                startActivity(searchActivity);
                             }
                         }
                         else if(text.toLowerCase().contains("stop"))
@@ -371,7 +382,10 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         }
     }
     private void startVoiceRecorder() {
-
+        animationView.setVisibility(View.VISIBLE);
+        animationView.setAnimation("animations/siri.json");
+        animationView.loop(true);
+        animationView.playAnimation();
         Log.d(TAG, "# startVoiceRecorder #");
         mIsRecording = true;
         if (mVoiceRecorder != null) {
@@ -384,6 +398,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     MediaPlayer mPlayer;
 
     private void stopVoiceRecorder() {
+        animationView.cancelAnimation();
+        animationView.setVisibility(View.INVISIBLE);
         Log.d(TAG, "# stopVoiceRecorder #");
         mIsRecording = false;
         if (mVoiceRecorder != null) {

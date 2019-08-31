@@ -18,6 +18,8 @@
             </intent-filter>
         </activity>
         <service android:name=".CloudSpeechService"/>
+        <activity android:name=".SearchActivity">
+        </activity>
     </application>
 
 </manifest>
