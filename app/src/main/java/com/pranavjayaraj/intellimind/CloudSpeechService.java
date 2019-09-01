@@ -1,7 +1,7 @@
 package com.pranavjayaraj.intellimind;
 
 /**
- * Created by kuttanz on 25/8/19.
+ * Created by Pranav on 25/8/19.
  */
 
 import java.io.IOException;

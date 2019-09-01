@@ -1,31 +1,35 @@
 package com.pranavjayaraj.intellimind.Recent;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.pranavjayaraj.intellimind.R;
+import com.pranavjayaraj.intellimind.SearchActivity;
 
 import java.util.List;
 
 /**
- * Created by kuttanz on 27/8/19.
+ * Created by Pranav on 27/8/19.
  */
 
 public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.MyViewHolder> {
 
     private java.util.List<String> recentList;
+    private Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public Button recent;
+        public TextView recent;
 
         public MyViewHolder(View view) {
             super(view);
-            recent = (Button) view.findViewById(R.id.recent);
-
+            recent = (TextView) view.findViewById(R.id.recent);
+            context =  view.getContext();
         }
     }
 
@@ -44,8 +48,16 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String recent = recentList.get(position);
+        final String recent = recentList.get(position);
         holder.recent.setText(recent);
+        holder.recent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent searchActivity = new Intent(context, SearchActivity.class);
+                searchActivity.putExtra("query",recent);
+                context.startActivity(searchActivity);
+            }
+        });
     }
 
     @Override

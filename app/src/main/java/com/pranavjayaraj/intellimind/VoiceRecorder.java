@@ -1,7 +1,7 @@
 package com.pranavjayaraj.intellimind;
 
 /**
- * Created by kuttanz on 25/8/19.
+ * Created by Pranav on 25/8/19.
  */
 
 import android.media.AudioFormat;
@@ -13,10 +13,8 @@ import androidx.annotation.NonNull;
 public class VoiceRecorder {
 
     private static final int[] SAMPLE_RATE_CANDIDATES = new int[]{16000, 11025, 22050, 44100};
-
     private static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     private static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
-
     private static final int AMPLITUDE_THRESHOLD = 1500;
     private static final int SPEECH_TIMEOUT_MILLIS = 3000;
     private static final int MAX_SPEECH_LENGTH_MILLIS = 30 * 1000;

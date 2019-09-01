@@ -1,7 +1,7 @@
 package com.pranavjayaraj.intellimind.Trie;
 
 /**
- * Created by kuttanz on 27/8/19.
+ * Created by Pranav on 27/8/19.
  */
 
 import java.util.LinkedList;

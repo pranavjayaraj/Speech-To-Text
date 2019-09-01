@@ -1,7 +1,7 @@
 package com.pranavjayaraj.intellimind.Database;
 
 /**
- * Created by kuttanz on 26/8/19.
+ * Created by Pranav on 26/8/19.
  */
 
 import java.util.ArrayList;

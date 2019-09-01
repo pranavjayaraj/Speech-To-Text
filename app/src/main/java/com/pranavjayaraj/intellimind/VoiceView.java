@@ -1,9 +1,5 @@
 package com.pranavjayaraj.intellimind;
 
-/**
- * Created by kuttanz on 25/8/19.
- */
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -21,7 +17,6 @@ import android.view.View;
 public class VoiceView extends View {
 
     private static final String TAG = VoiceView.class.getName();
-
     public static final int STATE_NORMAL = 0;
     public static final int STATE_PRESSED = 1;
     public static final int STATE_RECORDING = 2;
