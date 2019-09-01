@@ -149,16 +149,22 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         return item;
     }
 
+    // Save the recent searches to sharedpref
     public void SaveToRecent() {
 
             Gson gson = new Gson();
             String json = sharedPreferences.getString("Set", "");
-            Type type = new TypeToken<ArrayList<String>>() {
+            Type type = new TypeToken<ArrayList<String>>()
+            {
+
             }.getType();
-            if (!json.isEmpty()) {
+            if (!json.isEmpty())
+            {
                 arrPackage = gson.fromJson(json, type);
-                if (arrPackage != null) {
-                    if (arrPackage.size() >= 5) {
+                if (arrPackage != null)
+                {
+                    if (arrPackage.size() >= 5)
+                    {
                         arrPackage.remove(0);
                     }
                 }
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
     }
 
+    // Read recently searched items from sharedpref and display them
     public void ReadRecent() {
         // Read the reverse queue from sharedpref
         Gson gson = new Gson();
@@ -184,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         }
     }
 
+    // Insert sample data into the database
     public void insertSampleData() {
 
         // CREATE
@@ -194,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
     }
 
+    // Insert the data which you searched for into the database for future reference
     public void insertSearchData() {
             databaseH.create(new SearchObject(search.getText().toString()));
     }
@@ -255,24 +264,29 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    // Check if the user has stopped talking
                     if (isFinal && (!search.getText().toString().isEmpty())) {
-                       StartSearch();
+                       startSearch();// Start searching
                     }
                     else
                         {
-                        if (text.toLowerCase().contains("search")) {
-                            if ((!search.getText().equals("")))
+                            // Check if the user has spoken the word SEARCH
+                            if (text.toLowerCase().contains("search"))
+                        {
+                            // Check if the user is searching for an empty query
+                            if ((!search.getText().toString().isEmpty()))
                             {
-                                StartSearch();
+                                startSearch(); // Start searching
                             }
                         }
+                            // Check if the user has spoken the word STOP
                         else if (text.toLowerCase().contains("stop"))
                         {
-                            StopSearch();
+                            stopSearch();// Stop searching
                         }
                         else
                         {
-                            search.setText(text);
+                            search.setText(text);// Set user spoken words into the search bar
                         }
                     }
                 }
@@ -447,19 +461,20 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     }
 
 
-    void StartSearch() {
+    void startSearch() {
         insertSearchData();
         SaveToRecent();
         search.setText("");
         stopVoiceRecorder();
         mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
         mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
-        mPlayer.start();//Start playing the music
+        mPlayer.start();//Start playing the audio
         Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
+        searchActivity.putExtra("query",search.getText().toString());
         startActivity(searchActivity);
     }
 
-    void StopSearch()
+    void stopSearch()
     {
         search.setText("");
         stopVoiceRecorder();

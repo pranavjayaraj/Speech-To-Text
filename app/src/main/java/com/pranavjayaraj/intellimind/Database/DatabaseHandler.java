@@ -22,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TAG = "DatabaseHandler.java";
 
     // database version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 1;
 
     // database name
     protected static final String DATABASE_NAME = "NinjaDatabase2";
@@ -142,6 +142,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return the list of records
         return recordsList;
     }
+
+
+    /**
+     * get the recently searched items via database
+     *
     public List<SearchObject> recent() {
 
         List<SearchObject> recordsList = new ArrayList<SearchObject>();
@@ -175,4 +180,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return the list of records
         return recordsList;
     }
+     **/
 }

@@ -6,10 +6,8 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-
 import com.pranavjayaraj.intellimind.MainActivity;
 import com.pranavjayaraj.intellimind.Trie.Trie;
-
 import java.util.List;
 
 /**
@@ -21,6 +19,7 @@ public class CustomAutoCompleteTextChangedListener implements TextWatcher {
     public static final String TAG = "CustomAutoCompleteTextChangedListener.java";
     Context context;
     AutoCompleteTextView autoCompleteTextView;
+    int MAX_WORD = 10;
 
     public CustomAutoCompleteTextChangedListener(Context context, AutoCompleteTextView autoCompleteTextView) {
         this.context = context;
@@ -38,7 +37,7 @@ public class CustomAutoCompleteTextChangedListener implements TextWatcher {
                                   int after) {
         int wordsLength = countWords(s.toString());// words.length;
         // count == 0 means a new word is going to start
-        if (count == 0 && wordsLength >= 10) {
+        if (count == 0 && wordsLength >= MAX_WORD) {
             setCharLimit(autoCompleteTextView, autoCompleteTextView.getText().length());
         } else {
             removeFilter(autoCompleteTextView);
@@ -75,7 +74,7 @@ public class CustomAutoCompleteTextChangedListener implements TextWatcher {
     }
 
     private InputFilter filter;
-
+    //  limit the no of words
     private void setCharLimit(AutoCompleteTextView et, int max) {
         filter = new InputFilter.LengthFilter(max);
         et.setFilters(new InputFilter[]{filter});
