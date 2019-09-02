@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind.Trie;
+package com.pranavjayaraj.intellimind.Util.Trie;
 
 /**
  * Created by Pranav on 27/8/19.

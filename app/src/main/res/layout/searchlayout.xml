@@ -14,6 +14,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_marginLeft="10dp"
+            android:id="@+id/back"
             android:src="@drawable/ic_arrow_back_black_24dp"
             android:layout_height="wrap_content">
         </ImageView>
@@ -21,6 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:id="@+id/query"
+            android:maxLines="1"
             android:textAlignment="center"
             android:layout_marginRight="34dp"
             android:textColor="@color/colorAccent"

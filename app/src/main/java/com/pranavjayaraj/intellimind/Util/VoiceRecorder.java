@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind;
+package com.pranavjayaraj.intellimind.Util;
 
 /**
  * Created by Pranav on 25/8/19.

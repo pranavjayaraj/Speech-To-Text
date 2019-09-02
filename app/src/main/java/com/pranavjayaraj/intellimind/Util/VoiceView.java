@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind;
+package com.pranavjayaraj.intellimind.Util;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -13,6 +13,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.pranavjayaraj.intellimind.R;
 
 public class VoiceView extends View {
 

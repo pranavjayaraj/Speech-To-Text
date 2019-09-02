@@ -1,16 +1,15 @@
-package com.pranavjayaraj.intellimind.Recent;
+package com.pranavjayaraj.intellimind.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.pranavjayaraj.intellimind.R;
-import com.pranavjayaraj.intellimind.SearchActivity;
+import com.pranavjayaraj.intellimind.UI.SearchActivity;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind.AutoComplete;
+package com.pranavjayaraj.intellimind.Util.SearchSuggestion;
 
 import android.content.Context;
 import android.text.Editable;
@@ -6,8 +6,8 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import com.pranavjayaraj.intellimind.MainActivity;
-import com.pranavjayaraj.intellimind.Trie.Trie;
+import com.pranavjayaraj.intellimind.UI.MainActivity;
+import com.pranavjayaraj.intellimind.Util.Trie.Trie;
 import java.util.List;
 
 /**

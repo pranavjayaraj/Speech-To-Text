@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind;
+package com.pranavjayaraj.intellimind.UI;
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
@@ -28,13 +28,19 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pranavjayaraj.intellimind.Database.DatabaseHandler;
-import com.pranavjayaraj.intellimind.Recent.RecentAdapter;
-import com.pranavjayaraj.intellimind.AutoComplete.*;
+import com.pranavjayaraj.intellimind.Adapter.RecentAdapter;
+import com.pranavjayaraj.intellimind.Model.SearchObject;
+import com.pranavjayaraj.intellimind.R;
+import com.pranavjayaraj.intellimind.Service.CloudSpeechService;
+import com.pranavjayaraj.intellimind.Util.SearchSuggestion.CustomAutoCompleteTextChangedListener;
+import com.pranavjayaraj.intellimind.Util.SearchSuggestion.CustomAutoCompleteView;
+import com.pranavjayaraj.intellimind.Util.VoiceRecorder;
+import com.pranavjayaraj.intellimind.Util.VoiceView;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -91,12 +98,12 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent settings = new Intent(MainActivity.this,Settings.class);
+                Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(settings);
             }
         });
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        editor = sharedPreferences.edit();
+        sharedPreferences.getString("language","En-US");
         search = (CustomAutoCompleteView) findViewById(R.id.search);
         imageButton = (ImageButton) findViewById(R.id.search_icon);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +113,10 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                 {
                     insertSearchData();
                     SaveToRecent();
+                    if(mIsRecording)
+                    {
+                        stopListening();
+                    }
                     Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
                     searchActivity.putExtra("query",search.getText().toString());
                     startActivity(searchActivity);
@@ -136,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         ReadRecent();
+
     }
 
     // this function is used in CustomAutoCompleteTextChangedListener.java
@@ -217,40 +228,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
             databaseH.create(new SearchObject(search.getText().toString()));
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Prepare Cloud Speech API
-        bindService(new Intent(this, CloudSpeechService.class), mServiceConnection,
-                BIND_AUTO_CREATE);
-        // Start listening to voices
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                == PackageManager.PERMISSION_GRANTED) {
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.RECORD_AUDIO)) {
-            showPermissionMessageDialog();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
-                    REQUEST_RECORD_AUDIO_PERMISSION);
-        }
-    }
-
-    @Override
-    public void onStop() {
-
-        // Stop listening to voice
-        stopVoiceRecorder();
-
-        // Stop Cloud Speech API
-        if (mCloudSpeechService != null) {
-            mCloudSpeechService.removeListener(mCloudSpeechServiceListener);
-            unbindService(mServiceConnection);
-            mCloudSpeechService = null;
-        }
-
-        super.onStop();
-    }
-
     private void initViews() {
 
         mSavedText = "Hello";
@@ -280,26 +257,33 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                     }
                     else
                         {
-                            // Check if the user has spoken the word SEARCH
-                            if (text.toLowerCase().contains("search"))
-                        {
-                            // Check if the user is searching for an empty query
-                            if ((!search.getText().toString().isEmpty()))
+                            if(text.toLowerCase().contains("search"))
                             {
-                                startSearch(); // Start searching
+                                // Check if the user has spoken the word SEARCH
+                                 if (sharedPreferences.getBoolean("search",true))
+                                     {
+                            // Check if the user is searching for an empty query
+                                        if ((!search.getText().toString().isEmpty()))
+                                            {
+                                            startSearch(); // Start searching
+                                            }
+                                     }
                             }
-                        }
                             // Check if the user has spoken the word STOP
-                        else if (text.toLowerCase().contains("stop"))
-                        {
-                            stopSearch();// Stop searching
-                        }
-                        else
-                        {
-                            search.setText(text);// Set user spoken words into the search bar
+                             else if (text.toLowerCase().contains("stop"))
+                                     {
+
+                                    if(sharedPreferences.getBoolean("stop",true))
+                                        {
+                                            stopListening();// Stop searching
+                                        }
+                                      }
+                             else
+                                    {
+                                    search.setText(text);// Set user spoken words into the search bar
+                                    }
                         }
                     }
-                }
             });
         }
     };
@@ -324,8 +308,9 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         @Override
         public void onVoiceStart() {
             showStatus(true);
-            if (mCloudSpeechService != null) {
-                mCloudSpeechService.startRecognizing(mVoiceRecorder.getSampleRate());
+            if (mCloudSpeechService != null)
+            {
+                mCloudSpeechService.startRecognizing(mVoiceRecorder.getSampleRate(), sharedPreferences.getString("language-code","Default"));
             }
         }
 
@@ -474,17 +459,17 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     void startSearch() {
         insertSearchData();
         SaveToRecent();
-        search.setText("");
         stopVoiceRecorder();
         mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
         mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
         mPlayer.start();//Start playing the audio
         Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
         searchActivity.putExtra("query",search.getText().toString());
+        search.setText("");
         startActivity(searchActivity);
     }
 
-    void stopSearch()
+    void stopListening()
     {
         search.setText("");
         stopVoiceRecorder();
@@ -493,4 +478,46 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         mPlayer.start();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Prepare Cloud Speech API
+        bindService(new Intent(this, CloudSpeechService.class), mServiceConnection,
+                BIND_AUTO_CREATE);
+        // Start listening to voices
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_GRANTED) {
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.RECORD_AUDIO)) {
+            showPermissionMessageDialog();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
+                    REQUEST_RECORD_AUDIO_PERMISSION);
+        }
+    }
+
+    @Override
+    public void onStop() {
+
+        // Stop listening to voice
+        if(mIsRecording) {
+            stopListening();
+        }
+
+        // Stop Cloud Speech API
+        if (mCloudSpeechService != null) {
+            mCloudSpeechService.removeListener(mCloudSpeechServiceListener);
+            unbindService(mServiceConnection);
+            mCloudSpeechService = null;
+        }
+
+        super.onStop();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mIsRecording) {
+           stopListening();
+        }
+    }
 }

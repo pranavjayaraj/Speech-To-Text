@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind;
+package com.pranavjayaraj.intellimind.Service;
 
 /**
  * Created by Pranav on 25/8/19.
@@ -29,6 +29,7 @@ import com.google.cloud.speech.v1.StreamingRecognitionResult;
 import com.google.cloud.speech.v1.StreamingRecognizeRequest;
 import com.google.cloud.speech.v1.StreamingRecognizeResponse;
 import com.google.protobuf.ByteString;
+import com.pranavjayaraj.intellimind.R;
 
 import android.app.Service;
 import android.content.Context;
@@ -217,15 +218,19 @@ public class CloudSpeechService extends Service {
         mAccessTokenTask.execute();
     }
 
-    private String getDefaultLanguageCode() {
-        final Locale locale = Locale.getDefault();
-        final StringBuilder language = new StringBuilder(locale.getLanguage());
-        final String country = locale.getCountry();
-        if (!TextUtils.isEmpty(country)) {
-            language.append("-");
-            language.append(country);
+    private String getDefaultLanguageCode(String langCode) {
+        if(langCode.equals("Default")) {
+            final Locale locale = Locale.getDefault();
+            final StringBuilder language = new StringBuilder(locale.getLanguage());
+            final String country = locale.getCountry();
+            if (!TextUtils.isEmpty(country)) {
+                language.append("-");
+                language.append(country);
+            }
+            return language.toString();
         }
-        return language.toString();
+
+        return langCode;
     }
 
     @Nullable
@@ -247,7 +252,7 @@ public class CloudSpeechService extends Service {
      *
      * @param sampleRate The sample rate of the audio.
      */
-    public void startRecognizing(int sampleRate) {
+    public void startRecognizing(int sampleRate,String langCode) {
         if (mApi == null) {
             Log.w(TAG, "API not ready. Ignoring the request.");
             return;
@@ -257,7 +262,7 @@ public class CloudSpeechService extends Service {
         mRequestObserver.onNext(StreamingRecognizeRequest.newBuilder()
                 .setStreamingConfig(StreamingRecognitionConfig.newBuilder()
                         .setConfig(RecognitionConfig.newBuilder()
-                                .setLanguageCode(getDefaultLanguageCode())
+                                .setLanguageCode(getDefaultLanguageCode(langCode))
                                 .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)
                                 .setSampleRateHertz(sampleRate)
                                 .build())
@@ -265,7 +270,7 @@ public class CloudSpeechService extends Service {
                         .setSingleUtterance(false)
                         .build())
                 .build());
-        System.out.print("Hi"+getDefaultLanguageCode());
+        System.out.print("Hi"+ getDefaultLanguageCode(langCode));
     }
 
     /**

@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pranavjayaraj.intellimind.SearchObject;
+import com.pranavjayaraj.intellimind.Model.SearchObject;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 

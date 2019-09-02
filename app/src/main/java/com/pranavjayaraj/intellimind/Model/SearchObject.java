@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind;
+package com.pranavjayaraj.intellimind.Model;
 
 public class SearchObject {
     public String objectName;

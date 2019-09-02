@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="language">
+        <item>Default</item>
+        <item>English (Australia)</item>
+        <item>English (Canada)</item>
+        <item>English (Ghana)</item>
+        <item>English (Great Britain)</item>
+        <item>English (India)</item>
+        <item>English (Ireland)</item>
+        <item>English (Kenya)</item>
+        <item>English (New Zealand)</item>
+        <item>English (Nigeria)</item>
+        <item>English (Philippines)</item>
+        <item>English (Singapore)</item>
+        <item>English (South Africa)</item>
+        <item>English (Tanzania)</item>
+        <item>English (United States)</item>
+
+    </string-array>
+
+    <string-array name="language_code">
+        <item>Default</item>
+        <item>en-AU</item>
+        <item>en-CA</item>
+        <item>en-GH</item>
+        <item>en-GB</item>
+        <item>en-IN</item>
+        <item>en-IE</item>
+        <item>en-KE</item>
+        <item>en-NZ</item>
+        <item>en-NG</item>
+        <item>en-PH</item>
+        <item>en-SG</item>
+        <item>en-ZA</item>
+        <item>en-TZ</item>
+        <item>en-US</item>
+
+    </string-array>
+</resources>

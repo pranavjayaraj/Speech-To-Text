@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind.AutoComplete;
+package com.pranavjayaraj.intellimind.Util.SearchSuggestion;
 
 /**
  * Created by Pranav on 26/8/19.
@@ -6,7 +6,6 @@ package com.pranavjayaraj.intellimind.AutoComplete;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.AutoCompleteTextView;
 
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 
