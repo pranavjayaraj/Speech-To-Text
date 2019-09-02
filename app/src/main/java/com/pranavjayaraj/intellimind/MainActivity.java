@@ -71,10 +71,12 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     RecentAdapter recentAdapter;
     ArrayList<String> arrPackage = new ArrayList<String>();
     LottieAnimationView animationView;
+    ImageButton settings;
 
 
     SharedPreferences.Editor editor;
     SharedPreferences sharedPreferences;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +87,14 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.speechlayout);
         animationView = (LottieAnimationView) findViewById(R.id.menuAnimation2);
+        settings = (ImageButton) findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent settings = new Intent(MainActivity.this,Settings.class);
+                startActivity(settings);
+            }
+        });
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         editor = sharedPreferences.edit();
         search = (CustomAutoCompleteView) findViewById(R.id.search);

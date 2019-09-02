@@ -20,6 +20,8 @@
         <service android:name=".CloudSpeechService"/>
         <activity android:name=".SearchActivity">
         </activity>
+        <activity android:name=".Settings">
+        </activity>
     </application>
 
 </manifest>
