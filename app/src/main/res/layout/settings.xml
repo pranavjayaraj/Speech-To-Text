@@ -21,7 +21,7 @@
     <TextView
         app:layout_constraintTop_toTopOf="@+id/cons"
         android:layout_width="wrap_content"
-        android:text="Settings"
+        android:text="@string/settings"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:textColor="@color/colorPrimaryDark"
@@ -33,7 +33,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="Language"
+        android:text="@string/language"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="15sp"
@@ -55,7 +55,7 @@
         android:textStyle="bold"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="28dp"
-        android:text="Commands"
+        android:text="@string/commands"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/language">
 
@@ -63,7 +63,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="Search"
+        android:text="@string/search"
         android:id="@+id/searchtext"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/commands"
@@ -74,7 +74,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="Stop"
+        android:text="@string/stop"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchtext"
         android:layout_margin="20dp"
@@ -88,7 +88,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lang"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginBottom="20dp"
         android:layout_height="wrap_content">
     </androidx.appcompat.widget.AppCompatSpinner>

@@ -113,10 +113,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                 {
                     insertSearchData();
                     SaveToRecent();
-                    if(mIsRecording)
-                    {
-                        stopListening();
-                    }
+
                     Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
                     searchActivity.putExtra("query",search.getText().toString());
                     startActivity(searchActivity);
@@ -500,10 +497,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     public void onStop() {
 
         // Stop listening to voice
-        if(mIsRecording) {
-            stopListening();
-        }
-
         // Stop Cloud Speech API
         if (mCloudSpeechService != null) {
             mCloudSpeechService.removeListener(mCloudSpeechServiceListener);

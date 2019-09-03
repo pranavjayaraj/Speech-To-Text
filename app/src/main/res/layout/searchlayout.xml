@@ -13,7 +13,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:id="@+id/back"
             android:src="@drawable/ic_arrow_back_black_24dp"
             android:layout_height="wrap_content">
@@ -24,10 +24,10 @@
             android:id="@+id/query"
             android:maxLines="1"
             android:textAlignment="center"
-            android:layout_marginRight="34dp"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="34dp"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:layout_height="wrap_content">
         </TextView>
@@ -46,7 +46,7 @@
             android:id="@+id/menuAnimation2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:lottie_fileName="animations/search.json" />
+            app:lottie_fileName="animations/search.json"/>
 
         <TextView
             android:layout_width="wrap_content"

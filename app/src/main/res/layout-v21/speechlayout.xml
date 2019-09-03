@@ -31,7 +31,7 @@
             <com.pranavjayaraj.intellimind.Util.SearchSuggestion.CustomAutoCompleteView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/rounded_corner_textview"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_gravity="center_vertical"
@@ -106,14 +106,16 @@
 
     <com.pranavjayaraj.intellimind.Util.VoiceView
         android:id="@+id/recordButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
         android:visibility="visible" />
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/menuAnimation2"
         android:layout_width="match_parent"
         android:visibility="invisible"
-        android:layout_height="1dp"
+        android:layout_alignBottom="@+id/recordButton"
+        android:layout_height="50dp"
         app:lottie_fileName="animations/siri.json" />
     </LinearLayout>
 

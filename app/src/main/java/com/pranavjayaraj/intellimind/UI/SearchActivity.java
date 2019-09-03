@@ -29,7 +29,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
         Intent intent = getIntent();
-        Query = intent.getStringExtra("query");
+        Query = intent.getStringExtra(String.valueOf(R.string.query));
         final TextView textView = (TextView) findViewById(R.id.query);
         textView.setText(Query);
         final LottieAnimationView animationView = (LottieAnimationView) findViewById(R.id.menuAnimation2);
