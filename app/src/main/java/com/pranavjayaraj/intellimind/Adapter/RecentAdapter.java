@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.pranavjayaraj.intellimind.R;
-import com.pranavjayaraj.intellimind.UI.SearchActivity;
+import com.pranavjayaraj.intellimind.SearchActivity;
 
 import java.util.List;
 

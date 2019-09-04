@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind.UI;
+package com.pranavjayaraj.intellimind;
 
 import android.content.SharedPreferences;
 import android.content.res.Resources;

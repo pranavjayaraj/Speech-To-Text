@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind.UI;
+package com.pranavjayaraj.intellimind;
 
 import android.content.Intent;
 import android.os.Bundle;

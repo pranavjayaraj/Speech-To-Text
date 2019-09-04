@@ -1,4 +1,4 @@
-package com.pranavjayaraj.intellimind.UI;
+package com.pranavjayaraj.intellimind;
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
@@ -34,7 +34,6 @@ import com.google.gson.reflect.TypeToken;
 import com.pranavjayaraj.intellimind.Database.DatabaseHandler;
 import com.pranavjayaraj.intellimind.Adapter.RecentAdapter;
 import com.pranavjayaraj.intellimind.Model.SearchObject;
-import com.pranavjayaraj.intellimind.R;
 import com.pranavjayaraj.intellimind.Service.CloudSpeechService;
 import com.pranavjayaraj.intellimind.Util.SearchSuggestion.CustomAutoCompleteTextChangedListener;
 import com.pranavjayaraj.intellimind.Util.SearchSuggestion.CustomAutoCompleteView;
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
             }
         });
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        sharedPreferences.getString("language","En-US");
         search = (CustomAutoCompleteView) findViewById(R.id.search);
         imageButton = (ImageButton) findViewById(R.id.search_icon);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -113,9 +111,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                 {
                     insertSearchData();
                     SaveToRecent();
-
                     Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
-                    searchActivity.putExtra("query",search.getText().toString());
+                    searchActivity.putExtra(String.valueOf(R.string.query),search.getText().toString());
                     startActivity(searchActivity);
                 }
             }
@@ -461,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
         mPlayer.start();//Start playing the audio
         Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
-        searchActivity.putExtra("query",search.getText().toString());
+        searchActivity.putExtra(String.valueOf(R.string.query),search.getText().toString());
         search.setText("");
         startActivity(searchActivity);
     }

@@ -6,7 +6,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import com.pranavjayaraj.intellimind.UI.MainActivity;
+import com.pranavjayaraj.intellimind.MainActivity;
 import com.pranavjayaraj.intellimind.Util.Trie.Trie;
 import java.util.List;
 
