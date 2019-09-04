@@ -13,19 +13,20 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.pranavjayaraj.intellimind.R;
 
+/**
+ * Created by Pranav on 1/8/19.
+ */
 public class SettingsActivity extends AppCompatActivity
 {
-    Switch search,stop;
-    Spinner language;
+    Switch search,stop;//Buttons to activate and deactivate the voice listener
+    Spinner language;//language Dropdown
     SharedPreferences.Editor editor;
     SharedPreferences sharedPreferences;
-    String lang[]={};
-    String langCode[];
+    String lang[]={};//Language for displaying in settings
+    String langCode[];//Language code for the corresponding chosen language
     ImageButton back;
 
     @Override
@@ -74,8 +75,6 @@ public class SettingsActivity extends AppCompatActivity
                 }
             }
         });
-
-
         language = (Spinner) findViewById(R.id.language);
         lang= res.getStringArray( R.array.language);
         langCode = res.getStringArray( R.array.language_code);
@@ -99,8 +98,8 @@ public class SettingsActivity extends AppCompatActivity
         language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Saving the corresponding language code for the selected language into SharedPreference
                 String code = langCode[position];
-                System.out.println("code "+code);
                 editor.putString("language-code",code);
                 editor.putInt("position",position);
                 editor.commit();
@@ -109,23 +108,24 @@ public class SettingsActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView <?> parent) {
             }
         });
-        getStart();
-        getStop();
-        getLanguage();
+        getStartCommand();
+        getStopCommand();
+        getLanguageCode();
     }
-
-    void getStart()
+    //Function to get whether START command is activated or deactivated
+    void getStartCommand()
     {
      if(sharedPreferences.getBoolean("search",true))
          {
-           search.setChecked(true);
+             search.setChecked(true);
          }
      else
-     {
-         search.setChecked(false);
-     }
+         {
+             search.setChecked(false);
+         }
     }
-    void getStop()
+    //Function to get whether STOP command is activated or deactivated
+    void getStopCommand()
     {
         if(sharedPreferences.getBoolean("stop",true))
         {
@@ -136,7 +136,8 @@ public class SettingsActivity extends AppCompatActivity
             stop.setChecked(false);
         }
     }
-    void getLanguage()
+    //Function to get the selected Language code
+    void getLanguageCode()
     {
         language.setSelection(sharedPreferences.getInt("position",0));
     }

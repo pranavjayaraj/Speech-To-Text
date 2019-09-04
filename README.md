@@ -2,13 +2,13 @@
 Android App demonstrating the usage of Google Speech to Text API<br><br>
 
 <p float="left">
-<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot1.png" height="350" alt="Screenshot"/>
-<img src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot2.png" height="350" alt="Screenshot"/>
-<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot4.png" height="350" alt="Screenshot"/>
-<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot5.png" height="350" alt="Screenshot"/>
+<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot/screenshot1.png" height="350" alt="Screenshot"/>
+<img src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot/screenshot2.png" height="350" alt="Screenshot"/>
+<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot/screenshot4.png" height="350" alt="Screenshot"/>
+<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot/screenshot5.png" height="350" alt="Screenshot"/>
 </p><br><br>
 
-# Features
+#  Features
 •  Converts Speech to Text using the Google Speech to Text API.<br><br>
 •  Stop listening | Start listening modes are controlled with a custom animated Mic button<br><br>
 •  Pressing Mic starts listening, Pressing Mic again deactivates it.<br><br>
@@ -25,6 +25,11 @@ Android App demonstrating the usage of Google Speech to Text API<br><br>
 •  User can set the prefered language code as per their english accent for better recognition from the settings.<br><br>
 •  User can enable and disable the voice commands like SEARCH and STOP from the settings.<br><br>
 
+#  Scope for Improvement
+•  Detect speaker using the Microsoft Speaker Recognition API and allow voice enabled Login and Logout options.<br><br>
+•  Save the search results in the cache for viewing previous search results while being offline .<br><br>
+•  Open the application on voice command by running a background service like the Google Assistant.<br><br>
+•  Implement more search commands with the implementation of successive features.<br><br>
 
 
 

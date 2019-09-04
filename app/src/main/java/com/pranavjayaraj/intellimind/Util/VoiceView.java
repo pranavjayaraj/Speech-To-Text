@@ -15,7 +15,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.pranavjayaraj.intellimind.R;
-
+/**
+ * Created by Pranav on 25/8/19.
+ * This class helps to animate the voice listener
+ */
 public class VoiceView extends View {
 
     private static final String TAG = VoiceView.class.getName();

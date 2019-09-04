@@ -15,7 +15,7 @@
         android:minWidth="180dp"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="150dp"
         android:layout_marginRight="10dp"
         android:textStyle="normal"
         android:id="@+id/recent"

@@ -188,6 +188,7 @@ public class VoiceRecorder {
             mCallback.onVoiceEnd();
         }
 
+        //Function to check if the voice is being heard
         private boolean isHearingVoice(byte[] buffer, int size) {
             for (int i = 0; i < size - 1; i += 2) {
                 // The buffer has LINEAR16 in little endian.

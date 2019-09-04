@@ -35,6 +35,7 @@ public class CustomAutoCompleteTextChangedListener implements TextWatcher {
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count,
                                   int after) {
+        //Limit the word limit to 10
         int wordsLength = countWords(s.toString());// words.length;
         // count == 0 means a new word is going to start
         if (count == 0 && wordsLength >= MAX_WORD) {

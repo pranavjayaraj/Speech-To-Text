@@ -52,6 +52,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.MyViewHold
         holder.recent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Send query to search activity
                 Intent searchActivity = new Intent(context, SearchActivity.class);
                 searchActivity.putExtra(String.valueOf(R.string.query),recent);
                 context.startActivity(searchActivity);

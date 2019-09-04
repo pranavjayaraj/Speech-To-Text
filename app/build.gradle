@@ -70,8 +70,10 @@ dependencies {
     implementation('com.google.auth:google-auth-library-oauth2-http:0.7.0') {
         exclude module: 'httpclient'
     }
+    //Store arraylist as string in sharedpref
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //Animation
     implementation 'com.airbnb.android:lottie:3.0.7'
 
 }

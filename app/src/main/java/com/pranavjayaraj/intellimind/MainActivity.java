@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -43,7 +45,9 @@ import com.pranavjayaraj.intellimind.Util.VoiceView;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Created by Pranav on 23/8/19.
+ */
 public class MainActivity extends AppCompatActivity implements VoiceView.OnRecordListener {
     private static String TAG = "MainActivity";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 1;
@@ -71,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     // just to add some initial value
     public String[] item = new String[]{"Please search..."};
 
-    ImageButton imageButton;
+    ImageButton searchButton;
     RecyclerView recyclerView;
     RecentAdapter recentAdapter;
-    ArrayList<String> arrPackage = new ArrayList<String>();
+    ArrayList<String> recentArrayList = new ArrayList<String>();
     LottieAnimationView animationView;
     ImageButton settings;
 
@@ -86,14 +90,18 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        setContentView(R.layout.speechlayout);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.speechlayout);
-        animationView = (LottieAnimationView) findViewById(R.id.menuAnimation2);
-        settings = (ImageButton) findViewById(R.id.settings);
+
+        sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        animationView =  findViewById(R.id.menuAnimation2);
+        recyclerView = findViewById(R.id.recycler_view);
+        search =  findViewById(R.id.search);
+        settings =  findViewById(R.id.settings);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,10 +109,9 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                 startActivity(settings);
             }
         });
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        search = (CustomAutoCompleteView) findViewById(R.id.search);
-        imageButton = (ImageButton) findViewById(R.id.search_icon);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+
+        searchButton =  findViewById(R.id.search_icon);
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!search.getText().toString().isEmpty())
@@ -114,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                     Intent searchActivity = new Intent(MainActivity.this, SearchActivity.class);
                     searchActivity.putExtra(String.valueOf(R.string.query),search.getText().toString());
                     startActivity(searchActivity);
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this,"Please ask something",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -175,17 +186,17 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
             }.getType();
             if (!json.isEmpty())
             {
-                arrPackage = gson.fromJson(json, type);
-                if (arrPackage != null)
+                recentArrayList = gson.fromJson(json, type);
+                if (recentArrayList != null)
                 {
-                    if (arrPackage.size() >= 5)
+                    if (recentArrayList.size() >= 5)
                     {
-                        arrPackage.remove(0);
+                        recentArrayList.remove(0);
                     }
                 }
             }
-            arrPackage.add(search.getText().toString());
-            String json2 = gson.toJson(arrPackage);
+            recentArrayList.add(search.getText().toString());
+            String json2 = gson.toJson(recentArrayList);
             editor.putString("Set", json2);
             editor.commit();
             Display();
@@ -201,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         } else {
             Type type = new TypeToken<ArrayList<String>>() {
             }.getType();
-            arrPackage = gson.fromJson(json, type);
+            recentArrayList = gson.fromJson(json, type);
             Display();
         }
     }
@@ -209,7 +220,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     // Insert sample data into the database
     public void insertSampleData() {
 
-        // CREATE
         databaseH.create(new SearchObject("who is the CEO of Microsoft"));
         databaseH.create(new SearchObject("who is the CEO of Google"));
         databaseH.create(new SearchObject("Who is the Prime minister of India"));
@@ -221,13 +231,11 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     public void insertSearchData() {
             databaseH.create(new SearchObject(search.getText().toString()));
     }
-
+    //Function to initialize the views
     private void initViews() {
 
-        mSavedText = "Hello";
         mStartStopBtn = (VoiceView) findViewById(R.id.recordButton);
         mStartStopBtn.setOnRecordListener(this);
-
         final Resources resources = getResources();
         final Resources.Theme theme = getTheme();
         mColorHearing = ResourcesCompat.getColor(resources, R.color.status_hearing, theme);
@@ -261,6 +269,11 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                                             {
                                             startSearch(); // Start searching
                                             }
+                                        else
+                                        {
+                                            Toast.makeText(MainActivity.this,"Please ask something",Toast.LENGTH_LONG).show();
+
+                                        }
                                      }
                             }
                             // Check if the user has spoken the word STOP
@@ -301,7 +314,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
         @Override
         public void onVoiceStart() {
-            showStatus(true);
             if (mCloudSpeechService != null)
             {
                 mCloudSpeechService.startRecognizing(mVoiceRecorder.getSampleRate(), sharedPreferences.getString("language-code","Default"));
@@ -327,7 +339,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
         @Override
         public void onVoiceEnd() {
-            showStatus(false);
             if (mCloudSpeechService != null) {
                 mCloudSpeechService.finishRecognizing();
             }
@@ -363,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         }
     }
 
+    //Function to start recording
     private void startVoiceRecorder() {
         search.requestFocus();
         animationView.setVisibility(View.VISIBLE);
@@ -380,6 +392,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
     MediaPlayer mPlayer;
 
+    //Function to stop recording
     private void stopVoiceRecorder() {
         animationView.cancelAnimation();
         animationView.setVisibility(View.INVISIBLE);
@@ -424,13 +437,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         alertDialog.show();
     }
 
-    private void showStatus(final boolean hearingVoice) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-            }
-        });
-    }
 
     public static int dp2px(Context context, int dp) {
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context
@@ -438,8 +444,9 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         return px;
     }
 
+    //Function to display the set of 5 recent searches
     void Display() {
-        recentAdapter = new RecentAdapter(arrPackage);
+        recentAdapter = new RecentAdapter(recentArrayList);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -449,10 +456,10 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         recyclerView.scheduleLayoutAnimation();
     }
 
-
+    //Function to activate the voice listener
     void startSearch() {
-        insertSearchData();
-        SaveToRecent();
+        insertSearchData();//Save data into database
+        SaveToRecent();// save data into sharedpreferences for fetching the recent searches
         stopVoiceRecorder();
         mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
         mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.off);//Create MediaPlayer object with MP3 file under res/raw folder
@@ -463,6 +470,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         startActivity(searchActivity);
     }
 
+    //Function to deactivate the voice listener
     void stopListening()
     {
         search.setText("");
@@ -478,7 +486,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         // Prepare Cloud Speech API
         bindService(new Intent(this, CloudSpeechService.class), mServiceConnection,
                 BIND_AUTO_CREATE);
-        // Start listening to voices
+
+        //Check for permission to record voice
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_GRANTED) {
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -492,7 +501,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
     @Override
     public void onStop() {
-
         // Stop listening to voice
         // Stop Cloud Speech API
         if (mCloudSpeechService != null) {
@@ -503,6 +511,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
         super.onStop();
     }
+    //Deactivates the voice listener when some activity comes in the foreground
     @Override
     public void onPause() {
         super.onPause();
