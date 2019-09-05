@@ -15,7 +15,7 @@ public class VoiceRecorder {
     private static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     private static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
     private static final int AMPLITUDE_THRESHOLD = 1500;
-    private static final int SPEECH_TIMEOUT_MILLIS = 3000;
+    private static final int SPEECH_TIMEOUT_MILLIS = 50*1000;
     private static final int MAX_SPEECH_LENGTH_MILLIS = 30 * 1000;
 
     public static abstract class Callback {
@@ -140,7 +140,8 @@ public class VoiceRecorder {
             if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
                 mBuffer = new byte[sizeInBytes];
                 return audioRecord;
-            } else {
+            } else
+                {
                 audioRecord.release();
             }
         }

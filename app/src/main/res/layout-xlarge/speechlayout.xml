@@ -84,7 +84,7 @@
         android:id="@+id/recent"
         android:textAllCaps="false"
         android:background="@drawable/rounded_corner_textview"
-        android:layout_height="30dp" />
+        android:layout_height="50dp" />
 
 
     <androidx.recyclerview.widget.RecyclerView

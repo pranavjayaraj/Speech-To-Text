@@ -77,7 +77,6 @@
         android:layout_below="@+id/search_layout"
         android:layout_width="150dp"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="100dp"
         android:text="@string/recent"
         android:textColor="@color/colorAccent"
         android:textStyle="normal"

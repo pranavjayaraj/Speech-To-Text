@@ -73,6 +73,8 @@ import io.grpc.stub.StreamObserver;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * created by Pranav
  */
 
 public class CloudSpeechService extends Service {
@@ -270,7 +272,7 @@ public class CloudSpeechService extends Service {
                         .setSingleUtterance(false)
                         .build())
                 .build());
-        System.out.print("Hi"+ getDefaultLanguageCode(langCode));
+        System.out.print("Lang Code"+ getDefaultLanguageCode(langCode));
     }
 
     /**
@@ -339,7 +341,7 @@ public class CloudSpeechService extends Service {
             }
 
             // ***** WARNING *****
-            // In this sample, we load the credential from a JSON file stored in a raw resource
+            // we load the credential from a JSON file stored in a raw resource
             // folder of this client app. You should never do this in your app. Instead, store
             // the file in your server and obtain an access token from there.
             // *******************

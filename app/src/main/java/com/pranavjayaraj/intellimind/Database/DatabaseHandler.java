@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // database name
-    protected static final String DATABASE_NAME = "NinjaDatabase2";
+    protected static final String DATABASE_NAME = "Database";
 
     // table details
     public String tableName = "locations";
@@ -95,9 +95,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT " + fieldObjectId + " FROM " + tableName + " WHERE " + fieldObjectName + " = '" + objectName + "'", null);
 
-        if(cursor!=null) {
+        if(cursor!=null)
+        {
 
-            if(cursor.getCount()>0) {
+            if(cursor.getCount()>0)
+            {
                 recordExists = true;
             }
         }

@@ -2,7 +2,6 @@ package com.pranavjayaraj.intellimind;
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     ArrayList<String> recentArrayList = new ArrayList<String>();
     LottieAnimationView animationView;
     ImageButton settings;
-
 
     SharedPreferences.Editor editor;
     SharedPreferences sharedPreferences;
@@ -205,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
 
     // Read recently searched items from sharedpref and display them
     public void ReadRecent() {
-        // Read the reverse queue from sharedpref
+        // Read the ArrayList from sharedpref
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Set", "");
         if (json.isEmpty()) {
@@ -246,7 +244,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     private final CloudSpeechService.Listener mCloudSpeechServiceListener = new CloudSpeechService.Listener() {
         @Override
         public void onSpeechRecognized(final String text, final boolean isFinal) {
-            if (isFinal) {
+            if(isFinal)
+            {
                 mVoiceRecorder.dismiss();
             }
 
@@ -254,8 +253,9 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                 @Override
                 public void run() {
                     // Check if the user has stopped talking
-                    if (isFinal && (!search.getText().toString().isEmpty())) {
-                       startSearch();// Start searching
+                    if (isFinal && (!search.getText().toString().isEmpty()))
+                    {
+                        startSearch();// Start searching
                     }
                     else
                         {
@@ -267,10 +267,11 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
                             // Check if the user is searching for an empty query
                                         if ((!search.getText().toString().isEmpty()))
                                             {
-                                            startSearch(); // Start searching
+                                                startSearch(); // Start searching
                                             }
                                         else
                                         {
+
                                             Toast.makeText(MainActivity.this,"Please ask something",Toast.LENGTH_LONG).show();
 
                                         }
@@ -298,7 +299,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
-        public void onServiceConnected(ComponentName componentName, IBinder binder) {
+        public void onServiceConnected(ComponentName componentName, IBinder binder)
+        {
             mCloudSpeechService = CloudSpeechService.from(binder);
             mCloudSpeechService.addListener(mCloudSpeechServiceListener);
         }
@@ -359,7 +361,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     }
 
     private void startStopRecording() {
-
         Log.d(TAG, "# startStopRecording # : " + mIsRecording);
         if (mIsRecording) {
             mStartStopBtn.changePlayButtonState(VoiceView.STATE_NORMAL);
@@ -367,6 +368,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
             mPlayer.start();//Start playing the music
             stopVoiceRecorder();
         } else {
+            bindService(new Intent(this, CloudSpeechService.class), mServiceConnection,
+                    BIND_AUTO_CREATE);
             mStartStopBtn.changePlayButtonState(VoiceView.STATE_RECORDING);
             mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.on);//Create MediaPlayer object with MP3 file under res/raw folder
             mPlayer.start();//Start playing the music
@@ -375,7 +378,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     }
 
     //Function to start recording
-    private void startVoiceRecorder() {
+    private void startVoiceRecorder()
+    {
         search.requestFocus();
         animationView.setVisibility(View.VISIBLE);
         animationView.setAnimation("animations/siri.json");
@@ -383,7 +387,8 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         animationView.playAnimation();
         Log.d(TAG, "# startVoiceRecorder #");
         mIsRecording = true;
-        if (mVoiceRecorder != null) {
+        if (mVoiceRecorder != null)
+        {
             mVoiceRecorder.stop();
         }
         mVoiceRecorder = new VoiceRecorder(mVoiceCallback);
@@ -410,31 +415,12 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
             if (permissions.length == 1 && grantResults.length == 1
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            } else {
-                showPermissionMessageDialog();
+                bindService(new Intent(this, CloudSpeechService.class), mServiceConnection,
+                        BIND_AUTO_CREATE);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    private void showPermissionMessageDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("This app needs to record audio and recognize your speech")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                }).setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-            }
-        }).create();
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
     }
 
 
@@ -484,15 +470,11 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     public void onStart() {
         super.onStart();
         // Prepare Cloud Speech API
-        bindService(new Intent(this, CloudSpeechService.class), mServiceConnection,
-                BIND_AUTO_CREATE);
-
         //Check for permission to record voice
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_GRANTED) {
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.RECORD_AUDIO)) {
-            showPermissionMessageDialog();
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
                     REQUEST_RECORD_AUDIO_PERMISSION);
@@ -503,12 +485,6 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
     public void onStop() {
         // Stop listening to voice
         // Stop Cloud Speech API
-        if (mCloudSpeechService != null) {
-            mCloudSpeechService.removeListener(mCloudSpeechServiceListener);
-            unbindService(mServiceConnection);
-            mCloudSpeechService = null;
-        }
-
         super.onStop();
     }
     //Deactivates the voice listener when some activity comes in the foreground
@@ -517,6 +493,12 @@ public class MainActivity extends AppCompatActivity implements VoiceView.OnRecor
         super.onPause();
         if (mIsRecording) {
            stopListening();
+            if (mCloudSpeechService != null) {
+                mCloudSpeechService.removeListener(mCloudSpeechServiceListener);
+                unbindService(mServiceConnection);
+                mCloudSpeechService = null;
+            }
         }
+
     }
 }

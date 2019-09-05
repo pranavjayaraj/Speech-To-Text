@@ -24,6 +24,6 @@
         android:textSize="30sp"
         android:textAllCaps="false"
         android:background="@drawable/rounded_blue"
-        android:layout_height="50dp" />
+        android:layout_height="55dp" />
 
 </RelativeLayout>
