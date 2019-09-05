@@ -2,11 +2,11 @@
 Android App demonstrating the usage of Google Speech to Text API<br><br>
 
 <p float="left">
-<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot/screenshot1.png" height="350" alt="Screenshot"/>
-<img src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot/screenshot2.png" height="350" alt="Screenshot"/>
-<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot/screenshot4.png" height="350" alt="Screenshot"/>
-<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshot/screenshot5.png" height="350" alt="Screenshot"/>
-</p><br><br>
+<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshots/screenshot1.png" height="350" alt="Screenshot"/>
+<img src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshots/screenshot2.png" height="350" alt="Screenshot"/>
+<img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshots/screenshot3.png" height="350" alt="Screenshot"/>
+  <img  src="https://github.com/pranavj7Z/IntelliMind/blob/master/screenshots/screenshot4.png" height="350" alt="Screenshot"/>
+</p><br>
 
 #  Features
 •  Converts Speech to Text using the Google Speech to Text API.<br><br>
@@ -26,10 +26,13 @@ Android App demonstrating the usage of Google Speech to Text API<br><br>
 •  User can enable and disable the voice commands like SEARCH and STOP from the settings.<br><br>
 
 #  Scope for Improvement
-•  Detect speaker using the Microsoft Speaker Recognition API and allow voice enabled Login and Logout options.<br><br>
-•  Save the search results in the cache for viewing previous search results while being offline .<br><br>
-•  Open the application on voice command by running a background service like the Google Assistant.<br><br>
-•  Implement more search commands with the implementation of successive features.<br><br>
+•  Detect speaker with the help of microsoft Speaker recognition API for enabling voice based login and logout.<br><br>
+•  Cache the search results for offline access, fetching the previous results from database wihout rerequesting the data<br><br>
+•  Implement more search commands on successive feature addition.<br><br>
+•  Open app on voice command by running a background service like the Google Assistant.<br><br>
 
-
-
+# Set Up to Authenticate With Your Project's Credentials
+• In order to try out this sample, visit the Cloud Console, and navigate to: API Manager > Credentials > Create credentials >   Service account key > New service account.<br><br>
+• Create a new service account, and download the JSON credentials file.<br><br>
+• Put the file in the app resources as app/src/main/res/raw/credential.json.<br><br>
+• Open this example in Android studio and run the app. <br><br>
